@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import qs from "qs";
 
-const BASE_URL = process.env.STRAPI_URL || "http://127.0.0.1:1337";
+const BASE_URL = process.env.STRAPI_URL;
 
 export async function fetchDataFromStrapi(route) {
   const url = `${BASE_URL}/api/${route}`;
@@ -20,7 +20,9 @@ export function processInfoBlocks(data) {
   const infoBlocksRaw = data.attributes.info_blocks.data;
   return infoBlocksRaw.map((infoBlock) => ({
     ...infoBlock.attributes,
-    imageSrc: BASE_URL + infoBlock.attributes?.image?.data?.attributes?.url,
+    imageSrc:
+      // BASE_URL +
+      infoBlock.attributes?.image?.data?.attributes?.formats?.small?.url,
     id: infoBlock.id,
     button: createInfoBlockButton(infoBlock.attributes.button),
   }));
@@ -56,7 +58,8 @@ function processBlogArticle(article) {
     ...article.attributes,
     id: article.id,
     featuredImage:
-      BASE_URL + article.attributes?.featuredImage?.data?.attributes?.url,
+      // BASE_URL +
+      article.attributes?.featuredImage?.data?.attributes?.url,
   };
 }
 
@@ -72,7 +75,8 @@ export function formatDate(dateString) {
 }
 
 export function extractImageUrl(imageData) {
-  return BASE_URL + imageData.data?.attributes?.url;
+  // BASE_URL +
+  return imageData.data?.attributes?.url;
 }
 
 export async function fetchIndividualEvent(eventId) {
@@ -83,7 +87,8 @@ export async function fetchIndividualEvent(eventId) {
 function processEventData(event) {
   return {
     ...event.attributes,
-    image: BASE_URL + event.attributes?.image?.data?.attributes?.url,
+    // BASE_URL +
+    image: event.attributes?.image?.data?.attributes?.url,
     id: event.id,
   };
 }
